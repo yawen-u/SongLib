@@ -1,0 +1,13 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/Users/yawenxu/javafx-sdk-17/lib/javafx-swt.jar",
+        "/Users/yawenxu/javafx-sdk-17/lib/javafx.base.jar",
+        "/Users/yawenxu/javafx-sdk-17/lib/javafx.controls.jar",
+        "/Users/yawenxu/javafx-sdk-17/lib/javafx.fxml.jar",
+        "/Users/yawenxu/javafx-sdk-17/lib/javafx.graphics.jar",
+        "/Users/yawenxu/javafx-sdk-17/lib/javafx.media.jar",
+        "/Users/yawenxu/javafx-sdk-17/lib/javafx.swing.jar",
+        "/Users/yawenxu/javafx-sdk-17/lib/javafx.web.jar"
+    ]
+}
