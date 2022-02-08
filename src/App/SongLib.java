@@ -1,3 +1,5 @@
+package App;
+
 
 import java.io.IOException;
 
@@ -17,7 +19,7 @@ public class SongLib extends Application {
             Scene scene = new Scene(root);
 
             
-            // Scene scene = new Scene(root, 300, 250);
+            //Scene scene = new Scene(root, 300, 250);
     
             primaryStage.setTitle("Hello World!");
             primaryStage.setScene(scene);
