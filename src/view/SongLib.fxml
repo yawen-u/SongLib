@@ -15,6 +15,7 @@
       <Button layoutX="438.0" layoutY="271.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="53.0" text="Edit" />
       <Button layoutX="514.0" layoutY="271.0" mnemonicParsing="false" text="Delete" />
       <ScrollBar layoutX="551.0" layoutY="70.0" orientation="VERTICAL" prefHeight="171.0" prefWidth="16.0" />
-      <ListView layoutX="42.0" layoutY="70.0" prefHeight="267.0" prefWidth="271.0" />
+      <ListView layoutX="21.0" layoutY="70.0" prefHeight="267.0" prefWidth="309.0" />
+      <Button layoutX="275.0" layoutY="433.0" mnemonicParsing="false" text="Close" />
    </children>
 </AnchorPane>
