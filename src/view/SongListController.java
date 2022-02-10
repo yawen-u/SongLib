@@ -51,6 +51,11 @@ public class SongListController {
 
 	@FXML
 	private void handleCloseButtonAction(ActionEvent event) {
+		//Save all the changes in the text file
+		//........
+
+
+
 		Stage stage = (Stage) closeButton.getScene().getWindow();
 		stage.close();
 	}
