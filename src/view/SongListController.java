@@ -54,10 +54,17 @@ public class SongListController {
 		//Save all the changes in the text file
 		//........
 
-
-
 		Stage stage = (Stage) closeButton.getScene().getWindow();
 		stage.close();
+	}
+
+
+	@FXML
+	private Button addButton;
+
+	@FXML
+	private void handleAddButtonAction(ActionEvent event) {
+		addButton.setOnAction((ActionEvent a) -> System.out.println("Hello, World!"));
 	}
 	
 	// private void showItem(Stage mainStage) {                
