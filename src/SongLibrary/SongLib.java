@@ -1,3 +1,4 @@
+package SongLibrary;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,7 @@ public class SongLib extends Application {
 		// set up FXML loader
 		FXMLLoader loader = new FXMLLoader();   
 		loader.setLocation(
-				getClass().getResource("/view/list.fxml"));
+				getClass().getResource("/view/SongLib.fxml"));
 		
 		// load the fxml
 		AnchorPane root = (AnchorPane)loader.load();

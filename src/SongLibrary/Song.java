@@ -8,14 +8,12 @@ public class Song { //Song datatype
 
 
     //constructors
-
     public Song(String name, String artist, String album, int year){
         this.name = name;
         this.artist = artist;
         this.album = album;
         this.year = year;
     }
-
 
     //methods
     public String getName() {
