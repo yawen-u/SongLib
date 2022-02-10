@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import view.SongListController;
-import javafx.fxml.FXML;
  
 public class SongLib extends Application {
     @Override
