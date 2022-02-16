@@ -1,47 +1,63 @@
 package view;
 
-import javafx.event.ActionEvent;
-import javafx.scene.control.TextField;
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Optional;
+import java.util.Scanner;
 
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import SongLibrary.Song;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.ChoiceDialog;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class SongListController {
 
 	@FXML         
 	ListView<Song> listView;                
 
-	private ObservableList<Song> obsList;              
+	private ObservableList<Song> obsList;       
 
-	public void start(Stage mainStage) {      
+	public void start(Stage mainStage) throws IOException {      
 
 		// create an ObservableList from saved test file
 		obsList = FXCollections.observableArrayList(); 
 
 		listView.setItems(obsList);
-		Song first = new Song("26", "Lauv", "26", 2022);
-		listView.getItems().add(first);
+
+		//Read txt file to library
+		File myFile = new File("src/SongLibrary/SavedLib.txt");
+        //System.out.println("Attempting to read from file in: "+ myFile.getCanonicalPath());
+		int index = 0;
+
+        try {
+			File file = new File(myFile.getCanonicalPath());
+			Scanner myReader = new Scanner(file);
+			while (myReader.hasNextLine()) {
+				String data = myReader.nextLine();
+				String[] SongInfo = data.split(", ");
+				int year = Integer.parseInt(SongInfo[3]);
+				Song curr = new Song(SongInfo[0], SongInfo[1], SongInfo[2], year);
+				listView.getItems().add(index++, curr);
+				//System.out.println(year);
+			}
+			myReader.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
 
 		// select the first item
 		listView.getSelectionModel().select(0);

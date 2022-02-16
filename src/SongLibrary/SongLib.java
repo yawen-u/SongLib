@@ -1,5 +1,7 @@
 package SongLibrary;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,13 +26,13 @@ public class SongLib extends Application {
 		SongListController listController = loader.getController();
 		listController.start(primaryStage);
 
-		Scene scene = new Scene(root, 600, 450);
+		Scene scene = new Scene(root, 600, 500);
 		primaryStage.setScene(scene);
 		primaryStage.show(); 
 
 	}
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) throws IOException {
+    	launch(args);
+	}
 }
