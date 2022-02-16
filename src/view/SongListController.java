@@ -1,12 +1,15 @@
 package view;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Scanner;
 
 import SongLibrary.Song;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,7 +31,12 @@ public class SongListController {
 	@FXML         
 	ListView<Song> listView;                
 
-	private ObservableList<Song> obsList;       
+	private ObservableList<Song> obsList;
+	
+	// Buttons
+	private Button closeButton;
+	private Button addButton;
+	private Button editButton;
 
 	public void start(Stage mainStage) throws IOException {      
 
@@ -71,38 +79,9 @@ public class SongListController {
 				showItem(mainStage)
 				//showItemInputDialog(mainStage)
 				);
-	}
-
-	@FXML
-	private Button closeButton;
-
-	@FXML
-	private void handleCloseButtonAction(ActionEvent event) {
-		//Save all the changes in the text file
-		//........
-
-		Stage stage = (Stage) closeButton.getScene().getWindow();
-		stage.close();
-	}
-
-
-	@FXML
-	private Button addButton;
-
-	@FXML
-	private void handleAddButtonAction(ActionEvent event) {
-		
-		Stage dialogStage = new Stage();
-		dialogStage.initModality(Modality.WINDOW_MODAL);
-
-		VBox vbox = new VBox(new Text("Song Name: "), new Button("Save"));
-		vbox.setAlignment(Pos.CENTER);
-
-		dialogStage.setScene(new Scene(vbox, 300, 200)); 
-		dialogStage.show();
 
 	}
-	
+
 	private void showItem(Stage mainStage) {                
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.initOwner(mainStage);
@@ -120,12 +99,12 @@ public class SongListController {
 		alert.showAndWait();
 	}
 	
-	private void showItemInputDialog(Stage mainStage) {                
+	private void showItemInputDialog() {                
 		Song item = listView.getSelectionModel().getSelectedItem();
 		int index = listView.getSelectionModel().getSelectedIndex();
 
 		TextInputDialog dialog = new TextInputDialog(item.getName());
-		dialog.initOwner(mainStage); dialog.setTitle("List Item");
+		dialog.setTitle("List Item");
 		dialog.setHeaderText("Selected Item (Index: " + index + ")");
 		dialog.setContentText("Enter name: ");
 
@@ -134,6 +113,53 @@ public class SongListController {
 			Song edit = new Song(result.get(), item.getArtist(), item.getAlbum(), item.getYear());
 			obsList.set(index, edit); 
 		}
+	}
+
+	@FXML
+	private void handleCloseButtonAction(ActionEvent event) throws IOException {
+		//Save all the changes in the text file
+		File myFile = new File("src/SongLibrary/SavedLib.txt");
+		File file = new File(myFile.getCanonicalPath());
+		try (FileWriter blankFile = new FileWriter(file, false)) {
+			blankFile.flush();
+		} 
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+		for (Song each: obsList)
+		{
+			writer.append(each.getName());
+			writer.append(", ");
+			writer.append(each.getArtist());
+			writer.append(", ");
+			String year = Integer.toString(each.getYear());
+			writer.append(year);
+			writer.append("\n");
+			//System.out.println(each.getName());
+		}
+		writer.close();
+
+		// close stage
+		// Stage stage = (Stage) closeButton.getScene().getWindow();
+		// stage.close();
+		Platform.exit();
+	}
+
+	@FXML
+	private void handleAddButtonAction(ActionEvent event) {
+		
+		Stage dialogStage = new Stage();
+		dialogStage.initModality(Modality.WINDOW_MODAL);
+
+		VBox vbox = new VBox(new Text("Song Name: "), new Button("Save"));
+		vbox.setAlignment(Pos.CENTER);
+
+		dialogStage.setScene(new Scene(vbox, 300, 200)); 
+		dialogStage.show();
+
+	}
+
+	@FXML
+	private void handleEditButtonAction(ActionEvent event) {
+		showItemInputDialog();
 	}
 
 }
