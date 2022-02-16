@@ -20,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -34,8 +35,11 @@ public class SongListController {
 	private ObservableList<Song> obsList;
 	
 	// Buttons
+	@FXML 
 	private Button closeButton;
+	@FXML 
 	private Button addButton;
+	@FXML 
 	private Button editButton;
 
 	public void start(Stage mainStage) throws IOException {      
@@ -56,8 +60,8 @@ public class SongListController {
 			while (myReader.hasNextLine()) {
 				String data = myReader.nextLine();
 				String[] SongInfo = data.split(", ");
-				int year = Integer.parseInt(SongInfo[3]);
-				Song curr = new Song(SongInfo[0], SongInfo[1], SongInfo[2], year);
+
+				Song curr = new Song(SongInfo[0], SongInfo[1], SongInfo[2], SongInfo[3]);
 				listView.getItems().add(index++, curr);
 				//System.out.println(year);
 			}
@@ -130,8 +134,9 @@ public class SongListController {
 			writer.append(", ");
 			writer.append(each.getArtist());
 			writer.append(", ");
-			String year = Integer.toString(each.getYear());
-			writer.append(year);
+			writer.append(each.getAlbum());
+			writer.append(", ");
+			writer.append(each.getYear());
 			writer.append("\n");
 			//System.out.println(each.getName());
 		}
@@ -144,12 +149,46 @@ public class SongListController {
 	}
 
 	@FXML
-	private void handleAddButtonAction(ActionEvent event) {
+	private void handleAddButtonAction(ActionEvent event) { //@TODO handle incorrect input, make it look prettier
 		
 		Stage dialogStage = new Stage();
 		dialogStage.initModality(Modality.WINDOW_MODAL);
+		dialogStage.setTitle("Enter Song Details");
 
-		VBox vbox = new VBox(new Text("Song Name: "), new Button("Save"));
+		TextField nameInput = new TextField("Song");
+		TextField artistInput = new TextField("Artist");
+		TextField albumInput = new TextField("Album");
+		TextField yearInput = new TextField("Year");
+
+		Button confirmButton = new Button("Confirm");
+		confirmButton.setOnAction(e -> {
+			String name = nameInput.getText();
+			String artist = artistInput.getText();
+			String album = albumInput.getText();
+			String year = yearInput.getText();
+
+			// while(!(name == "Song"
+			// || name.replaceAll("\\s", "") == ""
+			// || artist == "Artist"
+			// || artist.replaceAll("\\s", "") == "")){
+			// 	//deals with incorrect inputs
+			// }
+			
+			
+			obsList.add(new Song(name, artist, album, year));
+			
+
+			dialogStage.close();
+		});
+
+		Button cancelButton = new Button("Cancel");
+		cancelButton.setOnAction(e -> {
+			dialogStage.close();
+		});
+
+		VBox vbox = new VBox(
+			nameInput, artistInput, albumInput,
+			 yearInput, confirmButton, cancelButton);
 		vbox.setAlignment(Pos.CENTER);
 
 		dialogStage.setScene(new Scene(vbox, 300, 200)); 
