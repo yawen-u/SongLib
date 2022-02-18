@@ -206,33 +206,33 @@ public class SongListController {
 
 		Stage dialogStage = new Stage();
 		dialogStage.initModality(Modality.WINDOW_MODAL);
-		dialogStage.setTitle("Enter Song Details");
+		dialogStage.setTitle("Edit Song Details");
 
-		Label label1 = new Label("Song:");
-		Label label2 = new Label("Artist:");
-		Label label3 = new Label("Year:");
-		Label label4 = new Label("Album:");
+		Label label1 = new Label("Song: \t");
+		Label label2 = new Label("Artist: \t");
+		Label label3 = new Label("Year: \t");
+		Label label4 = new Label("Album: \t");
 
 		TextField nameInput = new TextField(item.getName());
 		TextField artistInput = new TextField(item.getArtist());
-		TextField albumInput = new TextField(item.getYear());
-		TextField yearInput = new TextField(item.getAlbum());
+		TextField albumInput = new TextField(item.getAlbum());
+		TextField yearInput = new TextField(item.getYear());
 
 		HBox hb1 = new HBox();
 		hb1.getChildren().addAll(label1, nameInput);
-		hb1.setSpacing(10);
+		hb1.setAlignment(Pos.BASELINE_CENTER);
 
 		HBox hb2 = new HBox();
 		hb2.getChildren().addAll(label2, artistInput);
-		hb2.setSpacing(10);
+		hb2.setAlignment(Pos.BASELINE_CENTER);
 
 		HBox hb3 = new HBox();
 		hb3.getChildren().addAll(label3, albumInput);
-		hb3.setSpacing(10);
+		hb3.setAlignment(Pos.BASELINE_CENTER);
 
 		HBox hb4 = new HBox();
 		hb4.getChildren().addAll(label4, yearInput);
-		hb4.setSpacing(10);
+		hb4.setAlignment(Pos.BASELINE_CENTER);
 
 		Button confirmButton = new Button("Confirm");
 		confirmButton.setOnAction(e -> {
@@ -249,8 +249,13 @@ public class SongListController {
 			dialogStage.close();
 		});
 
-		VBox vbox = new VBox(
-			hb1, hb2, hb3, hb4, confirmButton, cancelButton);
+		HBox hb5 = new HBox();
+		hb5.getChildren().addAll(confirmButton, cancelButton);
+		hb5.setSpacing(80);
+		hb5.setAlignment(Pos.BASELINE_CENTER);
+
+		VBox vbox = new VBox(hb1, hb2, hb3, hb4, hb5);
+		vbox.setSpacing(10);
 		vbox.setAlignment(Pos.CENTER);
 
 		dialogStage.setScene(new Scene(vbox, 300, 200)); 
