@@ -164,7 +164,7 @@ public class SongListController {
 			String album = albumInput.getText();
 			String year = yearInput.getText();
 
-			while( name.replaceAll("\\s", "") == ""
+			if(name.replaceAll("\\s", "") == ""
 			|| artist.replaceAll("\\s", "") == ""){
 				if(name == "Song"
 				|| name.replaceAll("\\s", "") == "")
@@ -176,9 +176,7 @@ public class SongListController {
 
 				dialogStage.close();
 				dialogStage.showAndWait();
-
-				name = nameInput.getText();
-				artist = artistInput.getText();
+				return;
 			}
 			
 			
@@ -215,6 +213,7 @@ public class SongListController {
 		hb5.getChildren().addAll(confirmButton, cancelButton);
 		hb5.setSpacing(10);
 		hb5.setAlignment(Pos.BOTTOM_CENTER);
+		hb5.snappedBottomInset();
 
 		VBox vbox = new VBox(
 			hb1, hb2, hb3, hb4, hb5);
@@ -227,45 +226,77 @@ public class SongListController {
 
 	@FXML
 	private void handleEditButtonAction(ActionEvent event) {
-		Song item = listView.getSelectionModel().getSelectedItem();
-		int index = listView.getSelectionModel().getSelectedIndex();
+        Song item = listView.getSelectionModel().getSelectedItem();
+        int index = listView.getSelectionModel().getSelectedIndex();
 
-		Stage dialogStage = new Stage();
-		dialogStage.initModality(Modality.WINDOW_MODAL);
-		dialogStage.setTitle("Edit Song Details");
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.setTitle("Edit Song Details");
 
+        Label label1 = new Label("Song: \t");
+        Label label2 = new Label("Artist: \t");
+        Label label3 = new Label("Year: \t");
+        Label label4 = new Label("Album: \t");
 
-		TextField nameInput = new TextField(item.getName());
-		TextField artistInput = new TextField(item.getArtist());
+        TextField nameInput = new TextField(item.getName());
+        TextField artistInput = new TextField(item.getArtist());
+        TextField albumInput = new TextField(item.getAlbum());
+        TextField yearInput = new TextField(item.getYear());
 
-		HBox hb1 = new HBox();
-		hb1.getChildren().addAll(label1, nameInput);
+        HBox hb1 = new HBox();
+        hb1.getChildren().addAll(label1, nameInput);
+        hb1.setAlignment(Pos.BASELINE_CENTER);
 
-		HBox hb2 = new HBox();
-		hb2.getChildren().addAll(label2, artistInput);
-
+        HBox hb2 = new HBox();
+        hb2.getChildren().addAll(label2, artistInput);
+        hb2.setAlignment(Pos.BASELINE_CENTER);
 		HBox hb3 = new HBox();
-		hb3.getChildren().addAll(label3, albumInput);
+        hb3.getChildren().addAll(label3, albumInput);
+        hb3.setAlignment(Pos.BASELINE_CENTER);
 
-		HBox hb4 = new HBox();
-		hb4.getChildren().addAll(label4, yearInput);
+        HBox hb4 = new HBox();
+        hb4.getChildren().addAll(label4, yearInput);
+        hb4.setAlignment(Pos.BASELINE_CENTER);
 
-		Button confirmButton = new Button("Confirm");
-		confirmButton.setOnAction(e -> {
+        Button confirmButton = new Button("Confirm");
+        confirmButton.setOnAction(e -> {
+			
+            if(nameInput.getText().replaceAll("\\s", "") == ""
+			|| artistInput.getText().replaceAll("\\s", "") == ""){
+				if(nameInput.getText() == "Song"
+				|| nameInput.getText().replaceAll("\\s", "") == "")
+					nameInput.setText("Song cannot be empty");
+				
+				if(artistInput.getText() == "Artist"
+				|| artistInput.getText().replaceAll("\\s", "") == "")
+					artistInput.setText("Artist cannot be empty");
+
+				dialogStage.close();
+				dialogStage.showAndWait();
+				return;
 			}
-			dialogStage.close();
-		});
+				Song edit = new Song(nameInput.getText(), artistInput.getText(), albumInput.getText(), yearInput.getText());
+                obsList.set(index, edit); 
+            dialogStage.close();
+        });
 
-		Button cancelButton = new Button("Cancel");
-		cancelButton.setOnAction(e -> {
-			dialogStage.close();
-		});
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setOnAction(e -> {
+            dialogStage.close();
+        });
 
-		vbox.setAlignment(Pos.CENTER);
+        HBox hb5 = new HBox();
+        hb5.getChildren().addAll(confirmButton, cancelButton);
+        hb5.setSpacing(80);
+        hb5.setAlignment(Pos.BASELINE_CENTER);
 
-		dialogStage.setScene(new Scene(vbox, 300, 200)); 
-		dialogStage.show();
-	}
+        VBox vbox = new VBox(hb1, hb2, hb3, hb4, hb5);
+        vbox.setSpacing(10);
+        vbox.setAlignment(Pos.CENTER);
+
+        dialogStage.setScene(new Scene(vbox, 300, 200)); 
+        dialogStage.show();
+    }
 
 	@FXML
 	private void handleDeleteButtonAction(ActionEvent event) {
