@@ -19,9 +19,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -103,22 +105,6 @@ public class SongListController {
 
 		alert.setContentText(content);
 		alert.showAndWait();
-	}
-	
-	private void showItemInputDialog() {                
-		Song item = listView.getSelectionModel().getSelectedItem();
-		int index = listView.getSelectionModel().getSelectedIndex();
-
-		TextInputDialog dialog = new TextInputDialog(item.getName());
-		dialog.setTitle("List Item");
-		dialog.setHeaderText("Selected Item (Index: " + index + ")");
-		dialog.setContentText("Enter name: ");
-
-		Optional<String> result = dialog.showAndWait();
-		if (result.isPresent()) { 
-			Song edit = new Song(result.get(), item.getArtist(), item.getAlbum(), item.getYear());
-			obsList.set(index, edit); 
-		}
 	}
 
 	@FXML
@@ -205,7 +191,7 @@ public class SongListController {
 
 		VBox vbox = new VBox(
 			nameInput, artistInput, albumInput,
-			 yearInput, confirmButton, cancelButton);
+			yearInput, confirmButton, cancelButton);
 		vbox.setAlignment(Pos.CENTER);
 
 		dialogStage.setScene(new Scene(vbox, 300, 200)); 
@@ -215,7 +201,60 @@ public class SongListController {
 
 	@FXML
 	private void handleEditButtonAction(ActionEvent event) {
-		showItemInputDialog();
+		Song item = listView.getSelectionModel().getSelectedItem();
+		int index = listView.getSelectionModel().getSelectedIndex();
+
+		Stage dialogStage = new Stage();
+		dialogStage.initModality(Modality.WINDOW_MODAL);
+		dialogStage.setTitle("Enter Song Details");
+
+		Label label1 = new Label("Song:");
+		Label label2 = new Label("Artist:");
+		Label label3 = new Label("Year:");
+		Label label4 = new Label("Album:");
+
+		TextField nameInput = new TextField(item.getName());
+		TextField artistInput = new TextField(item.getArtist());
+		TextField albumInput = new TextField(item.getYear());
+		TextField yearInput = new TextField(item.getAlbum());
+
+		HBox hb1 = new HBox();
+		hb1.getChildren().addAll(label1, nameInput);
+		hb1.setSpacing(10);
+
+		HBox hb2 = new HBox();
+		hb2.getChildren().addAll(label2, artistInput);
+		hb2.setSpacing(10);
+
+		HBox hb3 = new HBox();
+		hb3.getChildren().addAll(label3, albumInput);
+		hb3.setSpacing(10);
+
+		HBox hb4 = new HBox();
+		hb4.getChildren().addAll(label4, yearInput);
+		hb4.setSpacing(10);
+
+		Button confirmButton = new Button("Confirm");
+		confirmButton.setOnAction(e -> {
+			if (nameInput != null || artistInput != null || albumInput != null || yearInput != null) { 
+				Song edit = new Song(nameInput.getText(), artistInput.getText(), albumInput.getText(), yearInput.getText());
+				obsList.set(index, edit); 
+			}
+			
+			dialogStage.close();
+		});
+
+		Button cancelButton = new Button("Cancel");
+		cancelButton.setOnAction(e -> {
+			dialogStage.close();
+		});
+
+		VBox vbox = new VBox(
+			hb1, hb2, hb3, hb4, confirmButton, cancelButton);
+		vbox.setAlignment(Pos.CENTER);
+
+		dialogStage.setScene(new Scene(vbox, 300, 200)); 
+		dialogStage.show();
 	}
 
 	@FXML
