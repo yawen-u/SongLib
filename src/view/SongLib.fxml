@@ -9,8 +9,8 @@
    <children>
       <Label contentDisplay="CENTER" layoutX="7.0" layoutY="6.0" prefHeight="17.0" prefWidth="600.0" text="Song Library" textAlignment="CENTER" />
       <Button fx:id="addButton" layoutX="21.0" layoutY="241.0" mnemonicParsing="false" onAction="#handleAddButtonAction" prefHeight="26.0" prefWidth="53.0" text="Add" />
-      <Button fx:id="editButton" layoutX="74.0" layoutY="241.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="53.0" text="Edit" />
-      <Button fx:id="deleteButton" layoutX="127.0" layoutY="241.0" mnemonicParsing="false" onAction="#handleCloseButtonAction" prefHeight="26.0" prefWidth="53.0" text="Delete" />
+      <Button fx:id="editButton" layoutX="74.0" layoutY="241.0" mnemonicParsing="false" onAction="#handleEditButtonAction" prefHeight="26.0" prefWidth="53.0" text="Edit" />
+      <Button fx:id="deleteButton" layoutX="127.0" layoutY="241.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" prefHeight="26.0" prefWidth="53.0" text="Delete" />
       <ListView fx:id="listView" layoutX="21.0" layoutY="54.0" prefHeight="187.0" prefWidth="159.0" />
       <Button fx:id="closeButton" layoutX="385.0" layoutY="295.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCloseButtonAction" prefHeight="33.0" prefWidth="72.0" text="Close" />
       <Label layoutX="23.0" layoutY="37.0" text="Song List" />

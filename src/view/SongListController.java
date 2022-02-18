@@ -23,7 +23,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -41,6 +40,8 @@ public class SongListController {
 	private Button addButton;
 	@FXML 
 	private Button editButton;
+	@FXML 
+	private Button deleteButton;
 
 	public void start(Stage mainStage) throws IOException {      
 
@@ -199,6 +200,22 @@ public class SongListController {
 	@FXML
 	private void handleEditButtonAction(ActionEvent event) {
 		showItemInputDialog();
+	}
+
+	@FXML
+	private void handleDeleteButtonAction(ActionEvent event) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Delete");
+		alert.setHeaderText("Are you sure ");
+		String content = "Index: " + 
+				listView.getSelectionModel()
+				.getSelectedIndex() + 
+				"\nValue: " + 
+				listView.getSelectionModel()
+				.getSelectedItem();
+		alert.setContentText(content);
+		alert.showAndWait();
+		event.consume();
 	}
 
 }
