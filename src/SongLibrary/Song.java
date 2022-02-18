@@ -6,7 +6,6 @@ public class Song { //Song datatype
     private String name, artist, album, year;
 
 
-
     //constructors
     public Song(String name, String artist, String album, String year){
         this.name = name;
