@@ -3,3 +3,6 @@ Song 2, Artist 2, Album 2, 2001
 Song 3, Artist 3, Album 3, 2003
 Song 4, Artist 4, Album 4, 2022
 Song Song 5, Artist Tomas, Album Pato, Year 2021
+Song cannot be empty, Artist cannot be empty, Album, Year
+Song cannot be empty, 321, 321, 321
+Song cannot be empty, 321, 321, 321

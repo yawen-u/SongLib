@@ -7,7 +7,6 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="342.0" prefWidth="471.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SongListController">
    <children>
-      <Label contentDisplay="CENTER" layoutX="7.0" layoutY="6.0" prefHeight="17.0" prefWidth="600.0" text="Song Library" textAlignment="CENTER" />
       <Button fx:id="addButton" layoutX="21.0" layoutY="241.0" mnemonicParsing="false" onAction="#handleAddButtonAction" prefHeight="26.0" prefWidth="53.0" text="Add" />
       <Button fx:id="editButton" layoutX="74.0" layoutY="241.0" mnemonicParsing="false" onAction="#handleEditButtonAction" prefHeight="26.0" prefWidth="53.0" text="Edit" />
       <Button fx:id="deleteButton" layoutX="127.0" layoutY="241.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" prefHeight="26.0" prefWidth="53.0" text="Delete" />

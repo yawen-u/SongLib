@@ -45,6 +45,7 @@ public class SongListController {
 
 	public void start(Stage mainStage) throws IOException {      
 
+		mainStage.setTitle("Song Library");
 		// create an ObservableList from saved test file
 		obsList = FXCollections.observableArrayList(); 
 
@@ -156,10 +157,14 @@ public class SongListController {
 		dialogStage.initModality(Modality.WINDOW_MODAL);
 		dialogStage.setTitle("Enter Song Details");
 
-		TextField nameInput = new TextField("Song");
-		TextField artistInput = new TextField("Artist");
-		TextField albumInput = new TextField("Album");
-		TextField yearInput = new TextField("Year");
+		TextField nameInput = new TextField("Enter Song");
+		nameInput.setOnMouseClicked(e -> {nameInput.clear();});
+		TextField artistInput = new TextField("Enter Artist");
+		artistInput.setOnMouseClicked(e -> {artistInput.clear();});
+		TextField albumInput = new TextField("Enter Album");
+		albumInput.setOnMouseClicked(e -> {albumInput.clear();});
+		TextField yearInput = new TextField("Enter Year");
+		yearInput.setOnMouseClicked(e -> {yearInput.clear();});
 
 		Button confirmButton = new Button("Confirm");
 		confirmButton.setOnAction(e -> {
@@ -168,15 +173,26 @@ public class SongListController {
 			String album = albumInput.getText();
 			String year = yearInput.getText();
 
-			// while(!(name == "Song"
-			// || name.replaceAll("\\s", "") == ""
-			// || artist == "Artist"
-			// || artist.replaceAll("\\s", "") == "")){
-			// 	//deals with incorrect inputs
-			// }
+			while( name.replaceAll("\\s", "") == ""
+			|| artist.replaceAll("\\s", "") == ""){
+				if(name == "Song"
+				|| name.replaceAll("\\s", "") == "")
+					nameInput.setText("Song cannot be empty");
+				
+				if(artist == "Artist"
+				|| artist.replaceAll("\\s", "") == "")
+					artistInput.setText("Artist cannot be empty");
+
+				dialogStage.close();
+				dialogStage.showAndWait();
+
+				name = nameInput.getText();
+				artist = artistInput.getText();
+			}
 			
 			
 			obsList.add(new Song(name, artist, album, year));
+			
 			
 
 			dialogStage.close();
