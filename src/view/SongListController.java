@@ -21,6 +21,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -81,7 +82,7 @@ public class SongListController {
 		// select the first item
 		listView.getSelectionModel().select(0);
 		listView.getItems().sort((o1,o2)->{
-			if ( o1.getName().compareToIgnoreCase(o2.getName()) > 0 ) {                                             // ascending sort
+			if ( o1.getName().compareToIgnoreCase(o2.getName()) > 0 ) {
 				return 1;
 			} else  {
 				return 0;
@@ -128,8 +129,6 @@ public class SongListController {
 		writer.close();
 
 		// close stage
-		// Stage stage = (Stage) closeButton.getScene().getWindow();
-		// stage.close();
 		Platform.exit();
 	}
 
@@ -176,7 +175,7 @@ public class SongListController {
 			Song newSong = new Song(name, artist, album, year);
 			listView.getItems().add(newSong);
 			listView.getItems().sort((o1,o2)->{
-				if ( o1.getName().compareToIgnoreCase(o2.getName()) > 0 ) {                                             // ascending sort
+				if ( o1.getName().compareToIgnoreCase(o2.getName()) > 0 ) {        
 					return 1;
 				} else  {
 					return 0;
@@ -239,6 +238,29 @@ public class SongListController {
 		Button confirmButton = new Button("Confirm");
 		confirmButton.setOnAction(e -> {
 			if (nameInput != null || artistInput != null || albumInput != null || yearInput != null) { 
+
+				//check if the song exits in the list
+				// for (Song i : listView.getItems()) {
+				// 	if ((i.getName() == nameInput.getText()) && (i.getArtist() == artistInput.getText())) {
+				// 		Alert alert = new Alert(AlertType.ERROR);
+				// 		alert.setTitle("Song Already Exists");
+				// 		alert.setHeaderText("Please enter a different song.");
+
+				// 		Optional<ButtonType> result = alert.showAndWait();
+				// 		if(result.get() == ButtonType.OK) {
+				// 			alert.close();
+				// 		} 
+				// 	}
+				// }
+				
+				// listView.getItems().sort((o1,o2)->{
+				// 	if ( o1.getName().compareToIgnoreCase(o2.getName()) > 0 ) {
+				// 		return 1;
+				// 	} else  {
+				// 		return 0;
+				// 	}
+				// });
+
 				Song edit = new Song(nameInput.getText(), artistInput.getText(), albumInput.getText(), yearInput.getText());
 				obsList.set(index, edit); 
 			}
