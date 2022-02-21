@@ -106,6 +106,8 @@ public class SongListController {
 				.addListener(new ChangeListener<Song>() {
 					public void changed(ObservableValue<? extends Song> obs, Song oldVal, Song newVal) {
 
+						if(newVal == null) description.setText("");
+						
 						description.setText("The song " + newVal.getName() +
 								"\nby " + newVal.getArtist() +
 								"\nwas recorded in " + newVal.getYear() +
@@ -254,39 +256,10 @@ public class SongListController {
 
 		Button confirmButton = new Button("Confirm");
 		confirmButton.setOnAction(e -> {
-<<<<<<< HEAD
-			if (nameInput != null || artistInput != null || albumInput != null || yearInput != null) { 
-
-				//check if the song exits in the list
-				// for (Song i : listView.getItems()) {
-				// 	if ((i.getName() == nameInput.getText()) && (i.getArtist() == artistInput.getText())) {
-				// 		Alert alert = new Alert(AlertType.ERROR);
-				// 		alert.setTitle("Song Already Exists");
-				// 		alert.setHeaderText("Please enter a different song.");
-
-				// 		Optional<ButtonType> result = alert.showAndWait();
-				// 		if(result.get() == ButtonType.OK) {
-				// 			alert.close();
-				// 		} 
-				// 	}
-				// }
-				
-				// listView.getItems().sort((o1,o2)->{
-				// 	if ( o1.getName().compareToIgnoreCase(o2.getName()) > 0 ) {
-				// 		return 1;
-				// 	} else  {
-				// 		return 0;
-				// 	}
-				// });
-
-				Song edit = new Song(nameInput.getText(), artistInput.getText(), albumInput.getText(), yearInput.getText());
-				obsList.set(index, edit); 
-=======
 			if (nameInput != null || artistInput != null || albumInput != null || yearInput != null) {
 				Song edit = new Song(nameInput.getText(), artistInput.getText(), albumInput.getText(),
 						yearInput.getText());
 				obsList.set(index, edit);
->>>>>>> 64d449ca1daf33367d894ad4e283beb1365337a3
 			}
 
 			dialogStage.close();
