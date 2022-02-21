@@ -46,7 +46,7 @@ public class SongListController {
 	@FXML 
 	private Button deleteButton;
 	@FXML
-	private TextArea discription;
+	private TextArea description;
 
 	public void start(Stage mainStage) throws IOException {      
 
@@ -81,14 +81,19 @@ public class SongListController {
 		// select the first item
 		listView.getSelectionModel().select(0);
 
-		discription = new TextArea();
+		Song item = listView.getSelectionModel().getSelectedItem();
+		description = new TextArea("The song " + item.getName() + 
+									" by " + item.getArtist() + 
+									" was recorded in " + item.getYear() +
+									" under the album of " + item.getAlbum() + ".");
+	
 		// set listener for the items
 		listView
 		.getSelectionModel()
 		.selectedIndexProperty()
 		.addListener(
 			(obs, oldVal, newVal) -> 
-				showDescriptionBox(discription)
+				showDescriptionBox()
 		);
 	}
 
@@ -267,12 +272,12 @@ public class SongListController {
 
 	}
 
-
 	// Please fix thiss!!
 	@FXML
-	private void showDescriptionBox(TextArea box) {
+	private void showDescriptionBox() {
+		description.clear();
 		Song item = listView.getSelectionModel().getSelectedItem();
-		box.setText("The song " + item.getName() + 
+		description.appendText("The song " + item.getName() + 
 							" by " + item.getArtist() + 
 							" was recorded in " + item.getYear() +
 							" under the album of " + item.getAlbum() + ".");
