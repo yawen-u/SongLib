@@ -5,12 +5,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.Scanner;
 
 import SongLibrary.Song;
 import javafx.application.Platform;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -82,30 +80,7 @@ public class SongListController {
 		// set listener for the items
 		listView
 		.getSelectionModel()
-		.selectedIndexProperty()
-		.addListener(
-				(obs, oldVal, newVal) -> 
-				showItem(mainStage)
-				//showItemInputDialog(mainStage)
-				);
-
-	}
-
-	private void showItem(Stage mainStage) {                
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.initOwner(mainStage);
-		alert.setTitle("List Item");
-		alert.setHeaderText("Selected list item properties");
-
-		String content = "Index: " + 
-				listView.getSelectionModel()
-				.getSelectedIndex() + 
-				"\nValue: " + 
-				listView.getSelectionModel()
-				.getSelectedItem();
-
-		alert.setContentText(content);
-		alert.showAndWait();
+		.selectedIndexProperty();
 	}
 
 	@FXML
@@ -279,6 +254,11 @@ public class SongListController {
 		}
 		alert.showAndWait();
 		event.consume();
+	}
+
+	@FXML
+	private void discriptioBox() {
+		
 	}
 
 }
