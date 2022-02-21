@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Scanner;
 
 import SongLibrary.Song;
@@ -44,6 +45,8 @@ public class SongListController {
 	private Button editButton;
 	@FXML 
 	private Button deleteButton;
+	@FXML
+	private TextArea discription;
 
 	public void start(Stage mainStage) throws IOException {      
 
@@ -78,13 +81,14 @@ public class SongListController {
 		// select the first item
 		listView.getSelectionModel().select(0);
 
+		discription = new TextArea();
 		// set listener for the items
 		listView
 		.getSelectionModel()
 		.selectedIndexProperty()
 		.addListener(
 			(obs, oldVal, newVal) -> 
-				showDescriptionBox(mainStage)
+				showDescriptionBox(discription)
 		);
 	}
 
@@ -254,16 +258,24 @@ public class SongListController {
 							 "Album:  " + item.getAlbum() + "\n" +
 							 "Year: " + item.getYear() + "\n");
 
-		if (ButtonType.YES != null) {
+		Optional<ButtonType> result = alert.showAndWait();
+		if(result.get() == ButtonType.YES) {
 			listView.getItems().remove(item);
-		}
-		alert.showAndWait();
-		event.consume();
+		} else if(result.get() == ButtonType.CANCEL) {
+			event.consume();
+		} 
+
 	}
 
+
+	// Please fix thiss!!
 	@FXML
-	private void showDescriptionBox(Stage mainstStage) {
+	private void showDescriptionBox(TextArea box) {
 		Song item = listView.getSelectionModel().getSelectedItem();
+		box.setText("The song " + item.getName() + 
+							" by " + item.getArtist() + 
+							" was recorded in " + item.getYear() +
+							" under the album of " + item.getAlbum() + ".");
 	}
 
 }
