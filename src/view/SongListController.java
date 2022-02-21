@@ -80,6 +80,13 @@ public class SongListController {
 
 		// select the first item
 		listView.getSelectionModel().select(0);
+		listView.getItems().sort((o1,o2)->{
+			if ( o1.getName().compareToIgnoreCase(o2.getName()) > 0 ) {                                             // ascending sort
+				return 1;
+			} else  {
+				return 0;
+			}
+		});
 
 		Song item = listView.getSelectionModel().getSelectedItem();
 		description = new TextArea("The song " + item.getName() + 
@@ -166,11 +173,16 @@ public class SongListController {
 				artist = artistInput.getText();
 			}
 			
-			
-			obsList.add(new Song(name, artist, album, year));
-			
-			
-
+			Song newSong = new Song(name, artist, album, year);
+			listView.getItems().add(newSong);
+			listView.getItems().sort((o1,o2)->{
+				if ( o1.getName().compareToIgnoreCase(o2.getName()) > 0 ) {                                             // ascending sort
+					return 1;
+				} else  {
+					return 0;
+				}
+			});
+			listView.getSelectionModel().select(newSong);;
 			dialogStage.close();
 		});
 
