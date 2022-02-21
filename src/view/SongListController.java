@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -80,7 +81,11 @@ public class SongListController {
 		// set listener for the items
 		listView
 		.getSelectionModel()
-		.selectedIndexProperty();
+		.selectedIndexProperty()
+		.addListener(
+			(obs, oldVal, newVal) -> 
+				showDescriptionBox(mainStage)
+		);
 	}
 
 	@FXML
@@ -257,8 +262,8 @@ public class SongListController {
 	}
 
 	@FXML
-	private void discriptioBox() {
-		
+	private void showDescriptionBox(Stage mainstStage) {
+		Song item = listView.getSelectionModel().getSelectedItem();
 	}
 
 }
