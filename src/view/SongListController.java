@@ -14,7 +14,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ListChangeListener.Change;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -24,7 +23,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -69,6 +67,9 @@ public class SongListController {
 		try {
 			File file = new File(myFile.getCanonicalPath());
 			Scanner myReader = new Scanner(file);
+			if (file.length() == 0) {
+				System.out.println("file empty");
+			}
 			while (myReader.hasNextLine()) {
 				String data = myReader.nextLine();
 				String[] SongInfo = data.split(", ");
@@ -84,36 +85,42 @@ public class SongListController {
 		}
 
 		// select the first item
-		listView.getSelectionModel().select(0);
+		if (listView.getItems().size() != 0) {
+			listView.getSelectionModel().select(0);
+			sortList();
+			Song item = listView.getSelectionModel().getSelectedItem();
+			description.setText("The song " + item.getName() +
+				"\nby " + item.getArtist() +
+				"\nwas recorded in " + item.getYear() +
+				"\nunder the album of " + item.getAlbum() + ".");
+	
+			// set listener for the items
+			listView
+			.getSelectionModel()
+			.selectedItemProperty()
+			.addListener(new ChangeListener<Song>() {
+				public void changed(ObservableValue<? extends Song> obs, Song oldVal, Song newVal) {
+
+					if(newVal == null) description.setText("");
+					
+					description.setText("The song " + newVal.getName() +
+							"\nby " + newVal.getArtist() +
+							"\nwas recorded in " + newVal.getYear() +
+							"\nunder the album of " + newVal.getAlbum() + ".");
+				}
+			});
+		}
+	}
+
+	@FXML
+	private void sortList(){
 		listView.getItems().sort((o1,o2)->{
-			if ( o1.getName().compareToIgnoreCase(o2.getName()) > 0 ) {
+			if ( o1.getName().compareToIgnoreCase(o2.getName()) > 0 ) {        
 				return 1;
 			} else  {
 				return 0;
 			}
 		});
-
-		Song item = listView.getSelectionModel().getSelectedItem();
-		description.setText("The song " + item.getName() +
-				"\nby " + item.getArtist() +
-				"\nwas recorded in " + item.getYear() +
-				"\nunder the album of " + item.getAlbum() + ".");
-
-		// set listener for the items
-		listView
-				.getSelectionModel()
-				.selectedItemProperty()
-				.addListener(new ChangeListener<Song>() {
-					public void changed(ObservableValue<? extends Song> obs, Song oldVal, Song newVal) {
-
-						if(newVal == null) description.setText("");
-						
-						description.setText("The song " + newVal.getName() +
-								"\nby " + newVal.getArtist() +
-								"\nwas recorded in " + newVal.getYear() +
-								"\nunder the album of " + newVal.getAlbum() + ".");
-					}
-				});
 	}
 
 	@FXML
@@ -125,7 +132,7 @@ public class SongListController {
 			blankFile.flush();
 		}
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-		for (Song each : obsList) {
+		for (Song each : listView.getItems()) {
 			writer.append(each.getName());
 			writer.append(", ");
 			writer.append(each.getArtist());
@@ -143,66 +150,52 @@ public class SongListController {
 	}
 
 	@FXML
-	private void handleAddButtonAction(ActionEvent event) { // @TODO handle incorrect input, make it look prettier
+	private void handleAddButtonAction(ActionEvent event) { 
+
+		Song item = listView.getSelectionModel().getSelectedItem();
 
 		Stage dialogStage = new Stage();
 		dialogStage.initModality(Modality.WINDOW_MODAL);
-		dialogStage.setTitle("Enter Song Details");
+		dialogStage.setTitle("Edit Song Details");
 
-		TextField nameInput = new TextField("Enter Song");
-		nameInput.setOnMouseClicked(e -> {
-			nameInput.clear();
-		});
-		TextField artistInput = new TextField("Enter Artist");
-		artistInput.setOnMouseClicked(e -> {
-			artistInput.clear();
-		});
-		TextField albumInput = new TextField("Enter Album");
-		albumInput.setOnMouseClicked(e -> {
-			albumInput.clear();
-		});
-		TextField yearInput = new TextField("Enter Year");
-		yearInput.setOnMouseClicked(e -> {
-			yearInput.clear();
-		});
+		Label label1 = new Label("Song: \t");
+		Label label2 = new Label("Artist: \t");
+		Label label3 = new Label("Year: \t");
+		Label label4 = new Label("Album: \t");
+
+		TextField nameInput = new TextField(item.getName());
+		TextField artistInput = new TextField(item.getArtist());
+		TextField albumInput = new TextField(item.getAlbum());
+		TextField yearInput = new TextField(item.getYear());
+
+		HBox hb1 = new HBox();
+		hb1.getChildren().addAll(label1, nameInput);
+		hb1.setAlignment(Pos.BASELINE_CENTER);
+
+		HBox hb2 = new HBox();
+		hb2.getChildren().addAll(label2, artistInput);
+		hb2.setAlignment(Pos.BASELINE_CENTER);
+
+		HBox hb3 = new HBox();
+		hb3.getChildren().addAll(label3, albumInput);
+		hb3.setAlignment(Pos.BASELINE_CENTER);
+
+		HBox hb4 = new HBox();
+		hb4.getChildren().addAll(label4, yearInput);
+		hb4.setAlignment(Pos.BASELINE_CENTER);
 
 		Button confirmButton = new Button("Confirm");
 		confirmButton.setOnAction(e -> {
-			String name = nameInput.getText();
-			String artist = artistInput.getText();
-			String album = albumInput.getText();
-			String year = yearInput.getText();
-
-			while (name.replaceAll("\\s", "") == ""
-					|| artist.replaceAll("\\s", "") == "") {
-				if (name == "Song"
-						|| name.replaceAll("\\s", "") == "")
-					nameInput.setText("Song cannot be empty");
-
-				if (artist == "Artist"
-						|| artist.replaceAll("\\s", "") == "")
-					artistInput.setText("Artist cannot be empty");
-
-				dialogStage.close();
-				dialogStage.showAndWait();
-
-				name = nameInput.getText();
-				artist = artistInput.getText();
+			if (nameInput != null && artistInput != null) {
+				Song newSong = new Song(nameInput.getText(), artistInput.getText(), albumInput.getText(), yearInput.getText());
+				listView.getItems().add(newSong);
+				listView.getSelectionModel().select(newSong);
 			}
-
-			Song newSong = new Song(name, artist, album, year);
-			listView.getItems().add(newSong);
-			listView.getItems().sort((o1,o2)->{
-				if ( o1.getName().compareToIgnoreCase(o2.getName()) > 0 ) {        
-					return 1;
-				} else  {
-					return 0;
-				}
-			});
-			listView.getSelectionModel().select(newSong);
 
 			dialogStage.close();
 		});
+		
+		sortList();
 
 		Button cancelButton = new Button("Cancel");
 		cancelButton.setOnAction(e -> {
@@ -257,8 +250,12 @@ public class SongListController {
 		Button confirmButton = new Button("Confirm");
 		confirmButton.setOnAction(e -> {
 			if (nameInput != null || artistInput != null || albumInput != null || yearInput != null) {
-				Song edit = new Song(nameInput.getText(), artistInput.getText(), albumInput.getText(),
-						yearInput.getText());
+				// for (Song i : listView.getItems()) {
+				// 	if (i.getName().equals(nameInput.getText())) {
+				// 		System.out.println("duplicates");
+				// 	}
+				// }
+				Song edit = new Song(nameInput.getText(), artistInput.getText(), albumInput.getText(), yearInput.getText());
 				obsList.set(index, edit);
 			}
 
@@ -300,18 +297,6 @@ public class SongListController {
 		} else if (result.get() == ButtonType.CANCEL) {
 			event.consume();
 		}
-
-	}
-
-	// Please fix thiss!!
-	@FXML
-	private void showDescriptionBox() {
-		description.clear();
-		Song item = listView.getSelectionModel().getSelectedItem();
-		description.setText("The song " + item.getName() +
-				" by " + item.getArtist() +
-				" was recorded in " + item.getYear() +
-				" under the album of " + item.getAlbum() + ".");
 
 	}
 
